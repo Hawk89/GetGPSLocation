@@ -79,20 +79,27 @@
         .info-box {
             background-color: #1e1e1e;
             border-left: 4px solid #00ffcc;
-            padding: 15px;
+            padding: 20px;
             margin-bottom: 25px;
-            max-width: 350px;
+            max-width: 400px;
             text-align: left;
             font-size: 0.95rem;
             line-height: 1.5;
             color: #ccc;
             animation: fadeIn 1s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.1);
+        }
+        .info-box h3 {
+            color: #00ffcc;
+            margin-top: 0;
+            text-transform: uppercase;
         }
         .info-box strong {
-            color: #00ffcc;
-            display: block;
-            margin-bottom: 5px;
-            font-size: 1.1rem;
+            color: #fff;
+        }
+        .info-box em {
+            color: #aaa;
+            font-size: 0.9rem;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
@@ -117,8 +124,14 @@
         <h1>Codice Accettato</h1>
         
         <div class="info-box">
-            <strong>Curiosità: Il Kimchi</strong>
-            Il Kimchi è il cuore pulsante della cucina coreana. Si tratta di un piatto di verdure fermentate (solitamente cavolo cinese) condito con peperoncino, aglio e zenzero. È simbolo di condivisione, salute e resistenza: i coreani ne consumano in grandi quantità, e la sua preparazione tradizionale (il "Kimjang") è persino riconosciuta dall'UNESCO come patrimonio culturale immateriale.
+            <h3>Lo sapevi che....</h3>
+            <p>Il piatto più rappresentativo e tradizionale della Corea del Sud è il <strong>kimchi</strong>, composto da verdure fermentate (solitamente cavolo napa) condite con aglio, zenzero e peperoncino.</p>
+            
+            <p>Oltre al kimchi, che accompagna quasi ogni pasto, altri piatti nazionali fondamentali includono:</p>
+            
+            <p><strong>Bibimbap:</strong> riso mescolato con verdure, carne, uovo e salsa di peperoncino (gochujang).<br>
+            <strong>Bulgogi:</strong> manzo grigliato marinato in una salsa a base di soia.<br>
+            <strong>Samgyeopsal:</strong> pancetta di maiale grigliata direttamente sul tavolo, tipica del barbecue coreano.</p>
         </div>
 
         <p style="color: #fff; margin-bottom: 20px;">Ora inserisci i codici numerici per avviare la navigazione.</p>
@@ -140,11 +153,9 @@
             const pass = document.getElementById('passcode').value.trim().toUpperCase();
             
             if (pass === "COREA") {
-                // Nasconde la prima fase e mostra la seconda
                 document.getElementById('fase-passcode').classList.add('hidden');
                 document.getElementById('fase-coordinate').classList.remove('hidden');
             } else {
-                // Mostra l'errore
                 document.getElementById('error-passcode').style.display = 'block';
             }
         }
@@ -154,11 +165,11 @@
             const lat = document.getElementById('lat').value;
             const lon = document.getElementById('lon').value;
             
-            // Coordinate esatte del My Kimchi
+            // Coordinate esatte (con tolleranza per accettare i numeri che lei ricava)
             const latCorretta = "45.4802824";
             const lonCorretta = "9.1811675";
 
-            // Controlla se i valori corrispondono (con tolleranza per evitare errori di battitura)
+            // Controlla se i valori corrispondono (tolleranza 0.001)
             if (Math.abs(lat - latCorretta) < 0.001 && Math.abs(lon - lonCorretta) < 0.001) {
                 
                 // Link per Google Maps in modalità Direzioni
