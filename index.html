@@ -169,7 +169,7 @@
             const lonCorretta = "9.1811675";
 
             // Controlla se i valori corrispondono (tolleranza 0.0001)
-            if (Math.abs(lat - latCorretta) < 0.0001 && Math.abs(lon - lonCorretta) < 0.0001) {
+            if (Math.abs(lat - latCorretta) < 0.001 && Math.abs(lon - lonCorretta) < 0.001) {
                 
                 // Link per Google Maps in modalità Direzioni
                 const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=walking`;
