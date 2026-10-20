@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sblocca la Destinazione</title>
+    <title>Terminale di Sblocco</title>
     <style>
         body {
             background-color: #121212;
@@ -13,18 +13,23 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
         }
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
         .input-group {
             margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         input {
             background-color: #1e1e1e;
@@ -33,9 +38,13 @@
             padding: 10px;
             font-size: 1.2rem;
             border-radius: 5px;
-            width: 200px;
+            width: 250px;
             text-align: center;
             outline: none;
+            text-transform: uppercase;
+        }
+        input[type="number"] {
+            text-transform: none;
         }
         input::placeholder {
             color: #666;
@@ -45,11 +54,11 @@
             color: #121212;
             border: none;
             padding: 12px 24px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
             text-transform: uppercase;
             transition: 0.3s;
         }
@@ -59,49 +68,105 @@
         }
         .error {
             color: #ff4444;
-            margin-top: 10px;
+            margin-top: 15px;
             display: none;
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+        /* Stile per la scheda del Kimchi */
+        .info-box {
+            background-color: #1e1e1e;
+            border-left: 4px solid #00ffcc;
+            padding: 15px;
+            margin-bottom: 25px;
+            max-width: 350px;
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #ccc;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .info-box strong {
+            color: #00ffcc;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <h1>Inserisci i codici di sblocco</h1>
-    
-    <div class="input-group">
-        <input type="number" id="lat" step="any" placeholder="Latitudine">
-    </div>
-    <div class="input-group">
-        <input type="number" id="lon" step="any" placeholder="Longitudine">
+    <!-- FASE 1: INSERIMENTO PASSCODE -->
+    <div id="fase-passcode">
+        <h1>Inserisci il codice di sblocco</h1>
+        <div class="input-group">
+            <input type="text" id="passcode" placeholder="Parola chiave">
+        </div>
+        <button onclick="verificaPasscode()">Sblocca</button>
+        <div class="error" id="error-passcode">Codice errato. Riprova.</div>
     </div>
 
-    <button onclick="sbloccaDestinazione()">Avvia Navigazione</button>
-    
-    <div class="error" id="error-msg">Codici errati. Riprova.</div>
+    <!-- FASE 2: KIMCHI + COORDINATE (Nascosta all'inizio) -->
+    <div id="fase-coordinate" class="hidden">
+        <h1>Codice Accettato</h1>
+        
+        <div class="info-box">
+            <strong>Curiosità: Il Kimchi</strong>
+            Il Kimchi è il cuore pulsante della cucina coreana. Si tratta di un piatto di verdure fermentate (solitamente cavolo cinese) condito con peperoncino, aglio e zenzero. È simbolo di condivisione, salute e resistenza: i coreani ne consumano in grandi quantità, e la sua preparazione tradizionale (il "Kimjang") è persino riconosciuta dall'UNESCO come patrimonio culturale immateriale.
+        </div>
+
+        <p style="color: #fff; margin-bottom: 20px;">Ora inserisci i codici numerici per avviare la navigazione.</p>
+
+        <div class="input-group">
+            <input type="number" id="lat" step="any" placeholder="Latitudine">
+        </div>
+        <div class="input-group">
+            <input type="number" id="lon" step="any" placeholder="Longitudine">
+        </div>
+
+        <button onclick="sbloccaDestinazione()">Avvia Navigazione</button>
+        <div class="error" id="error-coord">Coordinate errate. Riprova.</div>
+    </div>
 
     <script>
+        // FUNZIONE 1: Controlla il Passcode
+        function verificaPasscode() {
+            const pass = document.getElementById('passcode').value.trim().toUpperCase();
+            
+            if (pass === "COREA") {
+                // Nasconde la prima fase e mostra la seconda
+                document.getElementById('fase-passcode').classList.add('hidden');
+                document.getElementById('fase-coordinate').classList.remove('hidden');
+            } else {
+                // Mostra l'errore
+                document.getElementById('error-passcode').style.display = 'block';
+            }
+        }
+
+        // FUNZIONE 2: Controlla le coordinate e apre Maps
         function sbloccaDestinazione() {
-            // Prendi i valori inseriti
             const lat = document.getElementById('lat').value;
             const lon = document.getElementById('lon').value;
             
-            // Le coordinate esatte del My Kimchi (o della zona)
+            // Coordinate esatte del My Kimchi
             const latCorretta = "45.4802824";
             const lonCorretta = "9.1811675";
 
-            // Controlla se i valori inseriti corrispondono (con un piccolo margine di tolleranza)
+            // Controlla se i valori corrispondono (con tolleranza per evitare errori di battitura)
             if (Math.abs(lat - latCorretta) < 0.001 && Math.abs(lon - lonCorretta) < 0.001) {
                 
-                // Costruisce il link per Google Maps in modalità "Direzioni"
-                // Il parametro destination accetta lat,lon
+                // Link per Google Maps in modalità Direzioni
                 const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
-                
-                // Apre il link (sostituisci con window.open se vuoi una nuova scheda)
                 window.location.href = url;
                 
             } else {
-                // Mostra l'errore se i numeri non sono corretti
-                document.getElementById('error-msg').style.display = 'block';
+                document.getElementById('error-coord').style.display = 'block';
             }
         }
     </script>
