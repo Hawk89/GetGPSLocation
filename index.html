@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sblocca la Destinazione</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #00ffcc;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        input {
+            background-color: #1e1e1e;
+            border: 2px solid #00ffcc;
+            color: #fff;
+            padding: 10px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            width: 200px;
+            text-align: center;
+            outline: none;
+        }
+        input::placeholder {
+            color: #666;
+        }
+        button {
+            background-color: #00ffcc;
+            color: #121212;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #00ccaa;
+            transform: scale(1.05);
+        }
+        .error {
+            color: #ff4444;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Inserisci i codici di sblocco</h1>
+    
+    <div class="input-group">
+        <input type="number" id="lat" step="any" placeholder="Latitudine">
+    </div>
+    <div class="input-group">
+        <input type="number" id="lon" step="any" placeholder="Longitudine">
+    </div>
+
+    <button onclick="sbloccaDestinazione()">Avvia Navigazione</button>
+    
+    <div class="error" id="error-msg">Codici errati. Riprova.</div>
+
+    <script>
+        function sbloccaDestinazione() {
+            // Prendi i valori inseriti
+            const lat = document.getElementById('lat').value;
+            const lon = document.getElementById('lon').value;
+            
+            // Le coordinate esatte del My Kimchi (o della zona)
+            const latCorretta = "45.4802824";
+            const lonCorretta = "9.1811675";
+
+            // Controlla se i valori inseriti corrispondono (con un piccolo margine di tolleranza)
+            if (Math.abs(lat - latCorretta) < 0.001 && Math.abs(lon - lonCorretta) < 0.001) {
+                
+                // Costruisce il link per Google Maps in modalità "Direzioni"
+                // Il parametro destination accetta lat,lon
+                const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
+                
+                // Apre il link (sostituisci con window.open se vuoi una nuova scheda)
+                window.location.href = url;
+                
+            } else {
+                // Mostra l'errore se i numeri non sono corretti
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
